@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AMIT ALBUM</title>
+
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #0a0808;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* ── Intro Overlay ── */
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #1a120e 0%, #0a0808 100%);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        #intro.hidden {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+
+        /* ── VIP Text ── */
+        .vip-wrapper {
+            text-align: center;
+            position: relative;
+        }
+
+        .vip-name {
+            font-size: clamp(3.2rem, 14vw, 7rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #f7e7a0 0%, #d4af37 40%, #b8860b 70%, #f7e7a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow:
+                0 0 40px rgba(212, 175, 55, 0.25),
+                0 0 80px rgba(212, 175, 55, 0.10),
+                0 0 120px rgba(212, 175, 55, 0.05);
+            animation: glowPulse 1.8s ease-in-out infinite alternate;
+            position: relative;
+            display: inline-block;
+        }
+
+        .vip-name::after {
+            content: '';
+            position: absolute;
+            inset: -8px -12px;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+            filter: blur(20px);
+            z-index: -1;
+            animation: glowPulse 1.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 30px rgba(212, 175, 55, 0.20), 0 0 60px rgba(212, 175, 55, 0.08);
+            }
+            100% {
+                text-shadow: 0 0 60px rgba(212, 175, 55, 0.40), 0 0 120px rgba(212, 175, 55, 0.15), 0 0 180px rgba(212, 175, 55, 0.05);
+            }
+        }
+
+        /* ── Decorative Lines ── */
+        .vip-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.2rem 0 0.8rem;
+            opacity: 0.7;
+        }
+
+        .vip-ornament .line {
+            width: clamp(40px, 10vw, 100px);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        .vip-ornament .diamond {
+            color: #d4af37;
+            font-size: clamp(0.8rem, 2vw, 1.4rem);
+            opacity: 0.9;
+            animation: spinDiamond 3s linear infinite;
+        }
+
+        @keyframes spinDiamond {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.15);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        /* ── Subtitle ── */
+        .vip-sub {
+            font-size: clamp(0.9rem, 2.2vw, 1.6rem);
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(212, 175, 55, 0.6);
+            font-weight: 300;
+            margin-top: 0.2rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .vip-sub span {
+            color: rgba(212, 175, 55, 0.9);
+            font-weight: 600;
+        }
+
+        /* ── Album Name ── */
+        .album-name {
+            font-size: clamp(1.2rem, 3vw, 2.4rem);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.25);
+            font-weight: 300;
+            margin-top: 0.6rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .album-name strong {
+            color: rgba(212, 175, 55, 0.5);
+            font-weight: 600;
+        }
+
+        /* ── Loading Bar ── */
+        .loader-wrap {
+            margin-top: 2.8rem;
+            width: clamp(180px, 40vw, 380px);
+            height: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #d4af37, #f7e7a0, #d4af37);
+            border-radius: 4px;
+            animation: loadBar 2s ease-in-out forwards;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+        }
+
+        @keyframes loadBar {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        /* ── Particles ── */
+        .particle-container {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #d4af37;
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle 3s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .particle:nth-child(1) {
+            top: 15%;
+            left: 10%;
+            animation-delay: 0.0s;
+            width: 3px;
+            height: 3px;
+        }
+        .particle:nth-child(2) {
+            top: 25%;
+            left: 85%;
+            animation-delay: 0.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(3) {
+            top: 55%;
+            left: 5%;
+            animation-delay: 1.0s;
+            width: 4px;
+            height: 4px;
+        }
+        .particle:nth-child(4) {
+            top: 70%;
+            left: 90%;
+            animation-delay: 1.5s;
+            width: 3px;
+            height: 3px;
+        }
+        .particle:nth-child(5) {
+            top: 85%;
+            left: 20%;
+            animation-delay: 0.3s;
+            width: 6px;
+            height: 6px;
+        }
+        .particle:nth-child(6) {
+            top: 10%;
+            left: 50%;
+            animation-delay: 0.8s;
+            width: 4px;
+            height: 4px;
+        }
+        .particle:nth-child(7) {
+            top: 40%;
+            left: 70%;
+            animation-delay: 1.2s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(8) {
+            top: 90%;
+            left: 60%;
+            animation-delay: 0.6s;
+            width: 3px;
+            height: 3px;
+        }
+        .particle:nth-child(9) {
+            top: 5%;
+            left: 30%;
+            animation-delay: 1.8s;
+            width: 4px;
+            height: 4px;
+        }
+        .particle:nth-child(10) {
+            top: 60%;
+            left: 45%;
+            animation-delay: 0.2s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(11) {
+            top: 35%;
+            left: 25%;
+            animation-delay: 1.4s;
+            width: 3px;
+            height: 3px;
+        }
+        .particle:nth-child(12) {
+            top: 78%;
+            left: 75%;
+            animation-delay: 0.9s;
+            width: 6px;
+            height: 6px;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                opacity: 0;
+                transform: translateY(0px) scale(0.5);
+            }
+            20% {
+                opacity: 0.8;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-120px) scale(1.2);
+            }
+        }
+
+        /* ── Countdown text ── */
+        .countdown {
+            font-size: clamp(0.7rem, 1.2vw, 1rem);
+            color: rgba(212, 175, 55, 0.3);
+            letter-spacing: 0.2em;
+            margin-top: 1rem;
+            font-family: 'Arial', sans-serif;
+            font-weight: 300;
+            animation: fadeCount 1.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes fadeCount {
+            0% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0.9;
+            }
+        }
+
+        /* ── Skip button ── */
+        .skip-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            color: rgba(212, 175, 55, 0.4);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .skip-btn:hover {
+            background: rgba(212, 175, 55, 0.10);
+            border-color: rgba(212, 175, 55, 0.3);
+            color: rgba(212, 175, 55, 0.7);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .vip-ornament .line {
+                width: 30px;
+            }
+            .skip-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 6px 14px;
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .vip-name {
+                font-size: 2.6rem;
+            }
+            .vip-sub {
+                font-size: 0.7rem;
+                letter-spacing: 0.2em;
+            }
+            .album-name {
+                font-size: 0.9rem;
+            }
+            .loader-wrap {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── PARTICLES ─── -->
+    <div class="particle-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- ─── INTRO SCREEN ─── -->
+    <div id="intro">
+        <div class="vip-wrapper">
+
+            <!-- Ornament top -->
+            <div class="vip-ornament">
+                <span class="line"></span>
+                <span class="diamond">✦</span>
+                <span class="line"></span>
+            </div>
+
+            <!-- VIP Name -->
+            <div class="vip-name">AKASH SINGH</div>
+
+            <!-- Subtitle -->
+            <div class="vip-sub">
+                <span>✦</span>&nbsp; V I P &nbsp;<span>✦</span>
+            </div>
+
+            <!-- Album Name -->
+            <div class="album-name">
+                <strong>AMIT ALBUM</strong>
+            </div>
+
+            <!-- Loading Bar -->
+            <div class="loader-wrap">
+                <div class="loader-bar" id="loaderBar"></div>
+            </div>
+
+            <!-- Countdown -->
+            <div class="countdown" id="countdownText">WELCOME</div>
+        </div>
+    </div>
+
+    <!-- ─── SKIP BUTTON ─── -->
+    <button class="skip-btn" id="skipBtn">SKIP →</button>
+
+    <!-- ─── JAVASCRIPT ─── -->
+    <script>
+        (function() {
+            'use strict';
+
+            const TARGET_URL =
+                'https://drive.google.com/drive/folders/1ykPuFbKSblU17mB5UjxsKVz8jlzNVtyb';
+            const INTRO_DURATION = 2000; // 2 seconds
+
+            const intro = document.getElementById('intro');
+            const loaderBar = document.getElementById('loaderBar');
+            const countdownText = document.getElementById('countdownText');
+            const skipBtn = document.getElementById('skipBtn');
+
+            let redirectTimer = null;
+            let isRedirecting = false;
+
+            // ── Countdown ticker ──
+            const startTime = Date.now();
+            const countdownInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const remaining = Math.max(0, Math.ceil((INTRO_DURATION - elapsed) / 1000));
+                if (remaining > 0) {
+                    countdownText.textContent = '0:' + String(remaining).padStart(2, '0');
+                } else {
+                    countdownText.textContent = '✦ GO ✦';
+                }
+            }, 200);
+
+            // ── Redirect function (FORCES TOP-LEVEL NAVIGATION) ──
+            function redirectToDrive() {
+                if (isRedirecting) return;
+                isRedirecting = true;
+
+                // Hide intro with fade
+                intro.classList.add('hidden');
+
+                // Small delay then redirect using top location to break out of iframes
+                redirectTimer = setTimeout(() => {
+                    // Use window.top to ensure we navigate the very top window
+                    const topWin = window.top || window;
+                    topWin.location.href = TARGET_URL;
+                }, 500);
+            }
+
+            // ── Auto redirect after 2s ──
+            const autoTimer = setTimeout(() => {
+                redirectToDrive();
+            }, INTRO_DURATION);
+
+            // ── Skip button ──
+            skipBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                clearTimeout(autoTimer);
+                clearInterval(countdownInterval);
+                redirectToDrive();
+            });
+
+            // ── Click on intro also skips ──
+            intro.addEventListener('click', function() {
+                clearTimeout(autoTimer);
+                clearInterval(countdownInterval);
+                redirectToDrive();
+            });
+
+            // ── Keyboard: Space / Enter skips ──
+            document.addEventListener('keydown', function(e) {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(autoTimer);
+                    clearInterval(countdownInterval);
+                    redirectToDrive();
+                }
+            });
+
+            // ── Cleanup on redirect ──
+            window.addEventListener('beforeunload', function() {
+                clearTimeout(autoTimer);
+                clearTimeout(redirectTimer);
+                clearInterval(countdownInterval);
+            });
+
+            // ── Handle visibility change (tab switch) ──
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // Timer still runs, nothing else needed
+                }
+            });
+
+            console.log('✦ AMIT ALBUM — VIP Access ✦');
+            console.log('➜ Redirecting to:', TARGET_URL);
+            console.log('➜ Navigation will break out of any iframe (top-level)');
+
+        })();
+    </script>
+
+</body>
+</html>
