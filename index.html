@@ -696,4 +696,251 @@
 <body>
 
     <!-- ===== INTRO OVERLAY ===== -->
-  
+    <div id="intro-overlay">
+        <div class="intro-ring"></div>
+        <div class="intro-content">
+            <div class="site-badge"><i class="far fa-compass" style="margin-right: 10px;"></i> INTRO</div>
+            <h1>✦ INTRO ✦</h1>
+            <div class="name-group">
+                <span class="name">AKASH SINGH</span>
+                <span class="divider-symbol">✧ SANG ✧</span>
+                <span class="name alt">AMIT ALBUM</span>
+            </div>
+        </div>
+        <div class="intro-progress">
+            <div class="bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN VAULT ===== -->
+    <div class="vault-container" id="homePage">
+        <div class="vault-header">
+            <div class="logo"><i class="fas fa-folder-open"></i> VAULT</div>
+            <div class="status"><i class="fas fa-circle" style="color: #4ade80; font-size: 0.4rem; margin-right: 8px;"></i> secure</div>
+        </div>
+
+        <div class="folder-grid">
+            <!-- AMIT folder -->
+            <div class="folder-card" id="folder-amit" data-link="https://drive.google.com/drive/folders/1ykPuFbKSblU17mB5UjxsKVz8jlzNVtyb">
+                <div class="corner-glow"></div>
+                <div class="folder-icon"><i class="fas fa-folder"></i></div>
+                <div class="folder-name">AMIT</div>
+                <div class="folder-sub">
+                    <i class="fas fa-star"></i> album
+                    <span class="hover-arrow"><i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+
+            <!-- AKASH folder -->
+            <div class="folder-card" id="folder-akash" data-link="https://drive.google.com/drive/folders/1MsnVrO_-jr5Wjo0IhDzhquZ0bgKZQdNG">
+                <div class="corner-glow"></div>
+                <div class="folder-icon"><i class="fas fa-folder-open"></i></div>
+                <div class="folder-name">AKASH</div>
+                <div class="folder-sub">
+                    <i class="fas fa-crown"></i> collection
+                    <span class="hover-arrow"><i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="vault-footer">
+            <span><i class="fas fa-lock lock-icon" style="margin-right: 6px;"></i> premium access</span>
+            <span>© 2026 · curated</span>
+        </div>
+    </div>
+
+    <!-- ===== PASSWORD MODAL ===== -->
+    <div class="password-overlay" id="passwordModal">
+        <div class="password-box" id="passwordBox">
+            <div class="lock-icon-large"><i class="fas fa-key"></i></div>
+            <h3>UNLOCK FOLDER</h3>
+            <p class="sub-text">enter access code</p>
+
+            <div class="input-group">
+                <input type="password" id="passwordInput" placeholder="• • • • • • • • • •" inputmode="numeric" maxlength="20" autocomplete="off" />
+            </div>
+
+            <div class="error-msg" id="errorMsg"><i class="fas fa-exclamation-circle" style="margin-right: 6px;"></i> incorrect code</div>
+
+            <div class="btn-row">
+                <button class="btn-cancel" id="cancelBtn">cancel</button>
+                <button class="btn-submit" id="submitBtn">unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ACCESS GRANTED OVERLAY ===== -->
+    <div id="success-overlay">
+        <i class="fas fa-check-circle"></i>
+        <h2>ACCESS GRANTED</h2>
+        <p>redirecting to vault ...</p>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- VALID PASSWORDS -----
+            const VALID_PASSWORDS = ['6209023038', '6202670584', '9523925432'];
+
+            // ----- DOM REFS -----
+            const introOverlay = document.getElementById('intro-overlay');
+            const progressBar = document.getElementById('progress-bar');
+
+            const passwordModal = document.getElementById('passwordModal');
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMsg');
+            const submitBtn = document.getElementById('submitBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            const successOverlay = document.getElementById('success-overlay');
+
+            let targetLink = '';
+
+            // ----- 1. INTRO -----
+            if (introOverlay && progressBar) {
+                let width = 0;
+                const interval = setInterval(() => {
+                    width += 1.2;
+                    if (width >= 100) {
+                        width = 100;
+                        clearInterval(interval);
+                    }
+                    progressBar.style.width = width + '%';
+                }, 20);
+
+                setTimeout(() => {
+                    progressBar.style.width = '100%';
+                    clearInterval(interval);
+                    introOverlay.classList.add('hidden');
+                }, 2000);
+
+                setTimeout(() => {
+                    if (!introOverlay.classList.contains('hidden')) {
+                        introOverlay.classList.add('hidden');
+                    }
+                }, 2400);
+            } else {
+                if (introOverlay) setTimeout(() => introOverlay.classList.add('hidden'), 2000);
+            }
+
+            // ----- 2. PASSWORD MODAL -----
+            function showModal(link) {
+                targetLink = link;
+                passwordModal.classList.add('active');
+                passwordInput.value = '';
+                errorMsg.classList.remove('show');
+                passwordInput.classList.remove('shake');
+                setTimeout(() => passwordInput.focus(), 100);
+            }
+
+            function hideModal() {
+                passwordModal.classList.remove('active');
+                passwordInput.value = '';
+                errorMsg.classList.remove('show');
+                passwordInput.classList.remove('shake');
+                // ⚠️ DO NOT clear targetLink here — it's needed for redirect!
+            }
+
+            function showSuccessAndRedirect() {
+                const link = targetLink; // store before hiding
+                hideModal();
+                successOverlay.classList.add('active');
+
+                // Redirect after 800ms (within a second)
+                setTimeout(() => {
+                    if (link) {
+                        window.location.href = link;
+                    } else {
+                        console.warn('No link to redirect to.');
+                    }
+                }, 800);
+            }
+
+            function validatePassword() {
+                const entered = passwordInput.value.trim();
+                if (VALID_PASSWORDS.includes(entered)) {
+                    showSuccessAndRedirect();
+                } else {
+                    errorMsg.classList.add('show');
+                    passwordInput.classList.remove('shake');
+                    void passwordInput.offsetWidth;
+                    passwordInput.classList.add('shake');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }
+
+            // ----- 3. FOLDER CLICK -----
+            const folderAmit = document.getElementById('folder-amit');
+            const folderAkash = document.getElementById('folder-akash');
+
+            function handleFolderClick(e) {
+                const card = e.currentTarget;
+                const link = card.getAttribute('data-link');
+                if (link) {
+                    showModal(link);
+                } else {
+                    console.warn('No drive link defined.');
+                }
+            }
+
+            [folderAmit, folderAkash].forEach((folder) => {
+                if (!folder) return;
+                folder.addEventListener('click', handleFolderClick);
+                folder.setAttribute('role', 'button');
+                folder.setAttribute('tabindex', '0');
+                folder.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleFolderClick(e);
+                    }
+                });
+            });
+
+            // ----- 4. MODAL EVENTS -----
+            submitBtn.addEventListener('click', validatePassword);
+
+            cancelBtn.addEventListener('click', () => {
+                targetLink = ''; // clear only on explicit cancel
+                hideModal();
+            });
+
+            passwordInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    validatePassword();
+                } else if (e.key === 'Escape') {
+                    targetLink = '';
+                    hideModal();
+                }
+            });
+
+            passwordModal.addEventListener('click', (e) => {
+                if (e.target === passwordModal) {
+                    targetLink = '';
+                    hideModal();
+                }
+            });
+
+            passwordInput.addEventListener('input', () => {
+                errorMsg.classList.remove('show');
+                passwordInput.classList.remove('shake');
+            });
+
+            // ----- 5. SUCCESS OVERLAY: click to dismiss (just in case) -----
+            successOverlay.addEventListener('click', () => {
+                // if redirect fails, user can click to dismiss
+                successOverlay.classList.remove('active');
+            });
+
+            // ----- 6. TOUCH FIX -----
+            document.querySelectorAll('.folder-card').forEach(el => {
+                el.addEventListener('touchstart', () => {}, { passive: true });
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
