@@ -242,8 +242,6 @@ main{ flex:1; }
   padding:26px 18px calc(env(safe-area-inset-bottom) + 54px);
   animation:pageIn .45s var(--ease) both;
 }
-.page--wide{ max-width:920px; }
-
 @keyframes pageIn{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:none;} }
 
 .page-head{ margin-bottom:22px; }
@@ -354,123 +352,6 @@ main{ flex:1; }
 .folder-tag svg{ width:11px; height:11px; }
 
 /* ============================================================
-   EMBEDDED VIEWER (FALLBACK — used if new tab is blocked)
-   ============================================================ */
-.viewer-shell{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:14px;
-}
-
-.viewer-bar{
-  width:100%;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:10px; flex-wrap:wrap;
-  padding:12px 14px;
-  border-radius:18px;
-  border:1px solid rgba(217,180,106,.20);
-  background:
-    radial-gradient(130% 80% at 50% 0%, rgba(217,180,106,.08), transparent 62%),
-    linear-gradient(165deg, rgba(255,255,255,.05), rgba(255,255,255,.012));
-  box-shadow:0 22px 60px -42px rgba(0,0,0,.95);
-}
-
-.viewer-chip{
-  display:inline-flex; align-items:center; gap:8px;
-  font-size:.62rem;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color:var(--gold-2);
-  border:1px solid rgba(217,180,106,.28);
-  background:rgba(217,180,106,.09);
-  padding:5px 11px;
-  border-radius:999px;
-  font-weight:600;
-  max-width:100%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.viewer-chip svg{ width:12px; height:12px; flex:0 0 auto; }
-
-.viewer-actions{ display:flex; gap:8px; flex-wrap:wrap; }
-
-.mini-btn{
-  display:inline-flex; align-items:center; gap:7px;
-  padding:8px 13px;
-  border-radius:11px;
-  border:1px solid rgba(255,255,255,.11);
-  background:rgba(255,255,255,.05);
-  color:var(--text);
-  font-size:.7rem;
-  font-weight:500;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  text-decoration:none;
-  cursor:pointer;
-  transition:.2s var(--ease);
-  white-space:nowrap;
-}
-.mini-btn:hover{ border-color:var(--stroke); background:rgba(217,180,106,.12); color:var(--gold-2); }
-.mini-btn:active{ transform:scale(.96); }
-
-.viewer-frame{
-  position:relative;
-  width:min(100%, calc((100dvh - 240px) * 9 / 16));
-  aspect-ratio: 9 / 16;
-  margin:0 auto;
-  background:#0b0d12;
-  border-radius:22px;
-  overflow:hidden;
-  border:1px solid rgba(217,180,106,.22);
-  box-shadow:
-    0 40px 90px -42px rgba(0,0,0,.95),
-    0 0 0 6px rgba(217,180,106,.04),
-    0 0 0 1px rgba(255,255,255,.03) inset;
-}
-
-.viewer-frame:fullscreen,
-.viewer-frame:-webkit-full-screen{
-  width:100vw;
-  height:100vh;
-  max-width:none;
-  border-radius:0;
-  border:0;
-  box-shadow:none;
-}
-
-.viewer-frame iframe{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  border:0;
-  display:block;
-  background:#0b0d12;
-}
-
-.viewer-loader{
-  position:absolute; inset:0; z-index:2;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:15px;
-  background:#0b0d12;
-  transition:opacity .45s var(--ease), visibility .45s var(--ease);
-}
-.viewer-loader.hide{ opacity:0; visibility:hidden; }
-.viewer-loader span{
-  font-size:.66rem;
-  letter-spacing:.28em;
-  text-transform:uppercase;
-  color:var(--muted);
-}
-.spin{
-  width:34px; height:34px; border-radius:50%;
-  border:2px solid rgba(217,180,106,.18);
-  border-top-color:var(--gold);
-  animation:spin .8s linear infinite;
-}
-@keyframes spin{ to{ transform:rotate(360deg); } }
-
-/* ============================================================
    HELP CENTER
    ============================================================ */
 .back-btn{
@@ -564,15 +445,13 @@ a.row .row-v::after{
 }
 
 .note{
-  margin:16px 0 0;
+  margin:20px 0 0;
   font-size:.7rem;
   line-height:1.7;
   letter-spacing:.04em;
   color:rgba(139,147,167,.85);
   text-align:center;
-  max-width:560px;
 }
-.viewer-shell .note{ margin-top:4px; }
 
 /* ============================================================
    PASSWORD MODAL
@@ -667,7 +546,6 @@ a.row .row-v::after{
   letter-spacing:.06em;
   color:#ff7b8a;
 }
-.pw-error.ok{ color:#5ee29c; }
 
 .modal-actions{
   display:grid;
@@ -721,21 +599,11 @@ footer{
   .folder-icon{ width:40px; height:40px; border-radius:12px; }
   .folder-icon svg{ width:20px; height:20px; }
   .folder-name{ letter-spacing:.14em; }
-  .mini-btn{ font-size:.62rem; padding:7px 10px; }
-  .viewer-frame{ width:100%; border-radius:16px; }
 }
 
-@media (max-width:720px){
-  .viewer-frame{
-    width:min(100%, calc((100dvh - 260px) * 9 / 16));
-    min-width: 260px;
-  }
-}
-
-@media (min-width:1000px){
-  .viewer-frame{
-    width:min(100%, calc((100dvh - 220px) * 9 / 16));
-  }
+@media (min-width:700px){
+  .page{ padding-left:26px; padding-right:26px; }
+  .grid{ gap:18px; }
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -879,74 +747,6 @@ footer{
       </div>
     </section>
 
-    <!-- ==================== FALLBACK EMBEDDED VIEWER ==================== -->
-    <section class="page page--wide" id="page-view" hidden>
-
-      <button class="back-btn" id="viewBack" type="button">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 18l-6-6 6-6"/>
-        </svg>
-        Back to Album
-      </button>
-
-      <div class="page-head">
-        <h2 id="viewTitle">Folder</h2>
-        <p id="viewSub">Google Drive &middot; Embedded view</p>
-        <div class="rule"></div>
-      </div>
-
-      <div class="viewer-shell">
-
-        <div class="viewer-bar">
-          <span class="viewer-chip" id="viewerChip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 7.6A2.6 2.6 0 0 1 5.6 5h3.1a2 2 0 0 1 1.6.8l.9 1.2h7.2A2.6 2.6 0 0 1 21 9.6v6.8A2.6 2.6 0 0 1 18.4 19H5.6A2.6 2.6 0 0 1 3 16.4V7.6z"/>
-            </svg>
-            Drive Folder
-          </span>
-
-          <div class="viewer-actions">
-            <button class="mini-btn" id="reloadFrame" type="button">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/>
-              </svg>
-              Reload
-            </button>
-            <button class="mini-btn" id="openTabBtn" type="button">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 17 17 7"/><path d="M9 7h8v8"/>
-              </svg>
-              Open in Tab
-            </button>
-            <button class="mini-btn" id="fullBtn" type="button">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/>
-              </svg>
-              Full Screen
-            </button>
-          </div>
-        </div>
-
-        <div class="viewer-frame" id="viewerFrame">
-          <div class="viewer-loader" id="viewerLoader">
-            <div class="spin"></div>
-            <span>Loading folder</span>
-          </div>
-          <iframe id="driveFrame"
-                  title="Google Drive folder"
-                  referrerpolicy="no-referrer"
-                  allow="clipboard-read; clipboard-write; fullscreen"
-                  allowfullscreen></iframe>
-        </div>
-
-        <p class="note" id="viewerNote">
-          Folder must be shared as <strong>&ldquo;Anyone with the link can view&rdquo;</strong>
-          for it to display here.
-        </p>
-
-      </div>
-    </section>
-
     <!-- ==================== HELP CENTER ==================== -->
     <section class="page" id="page-help" hidden>
       <button class="back-btn" id="backBtn" type="button">
@@ -1054,7 +854,9 @@ footer{
   "use strict";
 
   /* =========================================================
-     1. OBFUSCATED KEY MATERIAL  (XOR 0x5A)
+     1. OBFUSCATED KEY MATERIAL
+     Passwords are never stored as plain text.
+     Each code array is the XOR (0x5A) of the password chars.
      ========================================================= */
   var MASK = 0x5A;
 
@@ -1065,6 +867,7 @@ footer{
   var C5 = [107,104,105,110,111,108,109,98,99,106];   /* key E */
   var C6 = [107,104,105,110,111,108,98,109,99,106];   /* key F */
 
+  /* Constant-time-ish comparison — never builds the plain password string */
   function verify(input, codes) {
     if (input.length !== codes.length) return false;
     var diff = 0, i;
@@ -1074,9 +877,6 @@ footer{
     return diff === 0;
   }
 
-  /* =========================================================
-     2. VAULT
-     ========================================================= */
   var VAULT = {
     akash: {
       label: "AKASH",
@@ -1086,39 +886,24 @@ footer{
     amit: {
       label: "AMIT",
       codes: [C1, C2, C3, C4],
-      url: "https://drive.google.com/drive/folders/1ykPuFbKSblU17mB5UjxsKVz8jlzNVtyb"
+      url: "https://fae-specific-parameter-surname.trycloudflare.com"
     },
     private1: {
       label: "PRIVATE 1",
       codes: [C1, C5],
-      url: "https://drive.google.com/drive/folders/PASTE_PRIVATE1_FOLDER_ID"
+      url: "https://fare-specific-parameter-surname.trycloudflare.com"
     },
     private2: {
       label: "PRIVATE 2",
       codes: [C1, C6],
-      url: "https://drive.google.com/drive/folders/PASTE_PRIVATE2_FOLDER_ID"
+      url: "https://fare-specific-parameter-surname.trycloudflare.com"
     }
   };
 
-  function extractDriveId(input) {
-    var s = (input || "").trim();
-    if (!s) return "";
-
-    var m = s.match(/\/folders\/([-\w]{10,})/);
-    if (m) return m[1];
-
-    m = s.match(/[?&]id=([-\w]{10,})/);
-    if (m) return m[1];
-
-    if (/^[-\w]{20,}$/.test(s)) return s;
-
-    return "";
-  }
-
   /* =========================================================
-     3. DOM REFS
+     2. DOM REFERENCES
      ========================================================= */
-  var $ = function (id) { return document.getElementById(id); };
+  var $  = function (id) { return document.getElementById(id); };
 
   var intro        = $("intro");
   var app          = $("app");
@@ -1126,20 +911,7 @@ footer{
   var menu         = $("menu");
   var pageHome     = $("page-home");
   var pageHelp     = $("page-help");
-  var pageView     = $("page-view");
   var backBtn      = $("backBtn");
-  var viewBack     = $("viewBack");
-  var viewTitle    = $("viewTitle");
-  var viewSub      = $("viewSub");
-  var viewerChip   = $("viewerChip");
-  var viewerNote   = $("viewerNote");
-  var viewerFrame  = $("viewerFrame");
-  var driveFrame   = $("driveFrame");
-  var viewerLoader = $("viewerLoader");
-  var reloadFrame  = $("reloadFrame");
-  var fullBtn      = $("fullBtn");
-  var openTabBtn   = $("openTabBtn");
-
   var modal        = $("modal");
   var modalCard    = $("modalCard");
   var modalTitle   = $("modalTitle");
@@ -1151,7 +923,7 @@ footer{
   var pwSubmit     = $("pwSubmit");
 
   /* =========================================================
-     4. INTRO
+     3. INTRO  (2 seconds)
      ========================================================= */
   var INTRO_MS = 2000;
 
@@ -1163,209 +935,47 @@ footer{
       if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
     }, 850);
   }
+
   window.setTimeout(endIntro, INTRO_MS);
 
   /* =========================================================
-     5. HASH ROUTER
+     4. HASH ROUTER  (supports system back gesture)
      ========================================================= */
-  function parseHash() {
+  var ROUTES = { home: pageHome, help: pageHelp };
+
+  function readRoute() {
     var raw = (location.hash || "").replace(/^#\/?/, "").toLowerCase();
-    var parts = raw.split("/");
-    if (parts[0] === "view" && parts[1] && VAULT[parts[1]]) {
-      return { page: "view", key: parts[1] };
-    }
-    if (parts[0] === "help") return { page: "help" };
-    return { page: "home" };
-  }
-
-  var currentView = null;
-  var loaderTimer = null;
-
-  function showLoader() {
-    viewerLoader.classList.remove("hide");
-    if (loaderTimer) window.clearTimeout(loaderTimer);
-    loaderTimer = window.setTimeout(function () {
-      viewerLoader.classList.add("hide");
-    }, 12000);
-  }
-
-  function hideLoader() {
-    if (loaderTimer) window.clearTimeout(loaderTimer);
-    viewerLoader.classList.add("hide");
-  }
-
-  function loadFrame(src) {
-    showLoader();
-    driveFrame.src = "about:blank";
-    window.setTimeout(function () { driveFrame.src = src; }, 60);
-  }
-
-  function mountViewer(key) {
-    var item = VAULT[key];
-    if (!item) { go("home"); return; }
-
-    currentView = key;
-    var id = extractDriveId(item.url);
-
-    viewTitle.textContent = item.label;
-    viewSub.textContent = "Google Drive \u00B7 Embedded view";
-
-    viewerChip.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" ' +
-      'stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M3 7.6A2.6 2.6 0 0 1 5.6 5h3.1a2 2 0 0 1 1.6.8l.9 1.2h7.2A2.6 2.6 0 0 1 21 9.6v6.8' +
-      'A2.6 2.6 0 0 1 18.4 19H5.6A2.6 2.6 0 0 1 3 16.4V7.6z"/></svg>' +
-      item.label + " \u00B7 Folder";
-
-    if (!id) {
-      hideLoader();
-      driveFrame.removeAttribute("src");
-      driveFrame.src = "about:blank";
-      openTabBtn.hidden = true;
-      viewerNote.innerHTML = "No valid Google Drive folder ID is configured for this album yet.";
-      return;
-    }
-
-    openTabBtn.hidden = false;
-
-    var src = "https://drive.google.com/embeddedfolderview?id=" +
-              encodeURIComponent(id) + "#grid";
-
-    if (driveFrame.getAttribute("data-src") !== src) {
-      driveFrame.setAttribute("data-src", src);
-      loadFrame(src);
-    }
-
-    viewerNote.innerHTML =
-      'Folder must be shared as <strong>&ldquo;Anyone with the link can view&rdquo;</strong> ' +
-      'for it to display here.';
-  }
-
-  function unmountViewer() {
-    if (!currentView) return;
-    currentView = null;
-    hideLoader();
-    try { driveFrame.src = "about:blank"; } catch (e) {}
-    driveFrame.removeAttribute("src");
-    driveFrame.removeAttribute("data-src");
-    exitFullscreen();
+    return Object.prototype.hasOwnProperty.call(ROUTES, raw) ? raw : "home";
   }
 
   function render() {
-    var r = parseHash();
-
-    pageHome.hidden = r.page !== "home";
-    pageHelp.hidden = r.page !== "help";
-    pageView.hidden = r.page !== "view";
-
-    if (r.page === "view") mountViewer(r.key);
-    else unmountViewer();
-
+    var route = readRoute();
+    var key;
+    for (key in ROUTES) {
+      if (Object.prototype.hasOwnProperty.call(ROUTES, key)) {
+        ROUTES[key].hidden = (key !== route);
+      }
+    }
     closeMenu();
     closeModal(true);
     window.scrollTo(0, 0);
   }
 
   function go(route) {
-    var target = "#/" + route;
-    if (location.hash === target) { render(); return; }
-    location.hash = target;
+    if (readRoute() === route) { render(); return; }
+    location.hash = "#/" + route;
   }
 
   window.addEventListener("hashchange", render);
 
+  /* Initial route without adding a history entry */
   if (!location.hash) {
     try { history.replaceState(null, "", "#/home"); }
     catch (e) { location.hash = "#/home"; }
   }
 
   /* =========================================================
-     6. NEW TAB DRIVE OPENER  (URL hidden — about:blank)
-     ---------------------------------------------------------
-     Opens a fresh window via `window.open('', '_blank')` and
-     immediately writes a full-viewport wrapper into it. The
-     wrapper contains only a fullscreen iframe pointing at the
-     Drive embedded folder view — so the address bar keeps
-     showing `about:blank` while the real Drive content fills
-     the tab. Clicking images / subfolders navigates inside
-     the iframe, exactly like a mini browser.
-     ========================================================= */
-  function buildWrapperHTML(driveId, label) {
-    var src = "https://drive.google.com/embeddedfolderview?id=" +
-              encodeURIComponent(driveId) + "#grid";
-
-    /* NOTE: the inner </script> tag is escaped as <\/script> so the
-       outer string literal doesn't close early. */
-    return '<!DOCTYPE html>' +
-'<html lang="en">' +
-'<head>' +
-'<meta charset="UTF-8">' +
-'<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">' +
-'<meta name="referrer" content="no-referrer">' +
-'<title>' + String(label).replace(/[<>&"]/g, "") + '</title>' +
-'<style>' +
-'html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#0b0d12;color-scheme:dark}' +
-'iframe{position:fixed;inset:0;width:100%;height:100%;border:0;display:block;background:#0b0d12}' +
-'#vl{position:fixed;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:#0b0d12;transition:opacity .45s ease,visibility .45s ease}' +
-'#vl.hide{opacity:0;visibility:hidden}' +
-'.sp{width:36px;height:36px;border-radius:50%;border:2px solid rgba(217,180,106,.2);border-top-color:#d9b46a;animation:sp .8s linear infinite}' +
-'@keyframes sp{to{transform:rotate(360deg)}}' +
-'</style>' +
-'</head>' +
-'<body>' +
-'<div id="vl"><div class="sp"></div></div>' +
-'<iframe id="df" src="' + src + '" ' +
-'allow="clipboard-read;clipboard-write;fullscreen" ' +
-'allowfullscreen referrerpolicy="no-referrer"></iframe>' +
-'<script>' +
-'(function(){' +
-'var f=document.getElementById("df"),l=document.getElementById("vl");' +
-'function hide(){if(!l)return;l.classList.add("hide");setTimeout(function(){if(l&&l.parentNode)l.parentNode.removeChild(l);l=null;},550);}' +
-'f.addEventListener("load",function(){setTimeout(hide,450);});' +
-'setTimeout(hide,14000);' +
-'})();' +
-'<\/script>' +
-'</body>' +
-'</html>';
-  }
-
-  /* Returns true if the new tab was successfully created. */
-  function openDriveInNewTab(driveId, label) {
-    if (!driveId) return false;
-
-    /* Open synchronously inside the user gesture so popup
-       blockers do not reject it. */
-    var win = null;
-    try {
-      win = window.open("", "_blank");
-    } catch (e) {
-      win = null;
-    }
-
-    if (!win) return false;
-
-    /* Try document.write — this works because the popup
-       inherits our origin from about:blank. */
-    try {
-      win.document.open();
-      win.document.write(buildWrapperHTML(driveId, label));
-      win.document.close();
-      win.focus();
-      return true;
-    } catch (e) {
-      /* Extremely rare — fall back to navigating that tab
-         directly to the Drive URL. URL will be visible. */
-      try {
-        win.location.href = "https://drive.google.com/drive/folders/" + driveId;
-        return true;
-      } catch (e2) {
-        return false;
-      }
-    }
-  }
-
-  /* =========================================================
-     7. MENU
+     5. THREE-DOT MENU
      ========================================================= */
   function closeMenu() {
     menu.classList.remove("open");
@@ -1395,80 +1005,8 @@ footer{
     else go("home");
   });
 
-  viewBack.addEventListener("click", function () {
-    if (history.length > 1) history.back();
-    else go("home");
-  });
-
   /* =========================================================
-     8. VIEWER CONTROLS (fallback page)
-     ========================================================= */
-  reloadFrame.addEventListener("click", function () {
-    if (!currentView) return;
-    var id = extractDriveId(VAULT[currentView].url);
-    if (!id) return;
-    loadFrame("https://drive.google.com/embeddedfolderview?id=" +
-              encodeURIComponent(id) + "#grid");
-  });
-
-  openTabBtn.addEventListener("click", function () {
-    if (!currentView) return;
-    var id = extractDriveId(VAULT[currentView].url);
-    if (!id) return;
-    openDriveInNewTab(id, VAULT[currentView].label);
-  });
-
-  function isFullscreen() {
-    return !!(document.fullscreenElement ||
-              document.webkitFullscreenElement ||
-              document.msFullscreenElement);
-  }
-
-  function exitFullscreen() {
-    try {
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      else if (document.msExitFullscreen) document.msExitFullscreen();
-    } catch (e) {}
-  }
-
-  function requestFullscreen() {
-    var el = viewerFrame;
-    try {
-      if (el.requestFullscreen) return el.requestFullscreen();
-      if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
-      if (el.msRequestFullscreen) return el.msRequestFullscreen();
-    } catch (e) {}
-  }
-
-  fullBtn.addEventListener("click", function () {
-    if (isFullscreen()) exitFullscreen();
-    else requestFullscreen();
-  });
-
-  function syncFullBtn() {
-    if (!fullBtn) return;
-    var fs = isFullscreen();
-    fullBtn.innerHTML = fs
-      ? '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-        '<path d="M9 4v5H4"/><path d="M15 4v5h5"/><path d="M9 20v-5H4"/><path d="M15 20v-5h5"/></svg> Exit Full'
-      : '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-        '<path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/></svg> Full Screen';
-  }
-
-  ["fullscreenchange","webkitfullscreenchange","msfullscreenchange"]
-    .forEach(function (evt) {
-      document.addEventListener(evt, syncFullBtn);
-    });
-
-  driveFrame.addEventListener("load", function () {
-    var src = driveFrame.getAttribute("src") || "";
-    if (!src || src === "about:blank") return;
-    window.setTimeout(hideLoader, 400);
-  });
-
-  /* =========================================================
-     9. PASSWORD MODAL  — opens new tab on success
+     6. PASSWORD MODAL
      ========================================================= */
   var activeTarget = null;
   var fails = 0;
@@ -1482,7 +1020,6 @@ footer{
     modalActions.style.display = "";
     pwInput.disabled = false;
     pwSubmit.disabled = false;
-    pwError.classList.remove("ok");
     pwError.textContent = "";
     pwInput.value = "";
   }
@@ -1510,7 +1047,6 @@ footer{
   }
 
   function showError(msg) {
-    pwError.classList.remove("ok");
     pwError.textContent = msg;
     modalCard.classList.add("shake");
     window.setTimeout(function () { modalCard.classList.remove("shake"); }, 460);
@@ -1556,54 +1092,24 @@ footer{
     /* ---- SUCCESS ---- */
     fails = 0;
     lockUntil = 0;
+    pwError.textContent = "";
 
-    var key = activeTarget;
-    var id  = extractDriveId(item.url);
-
-    /* Show unlocked state */
     modalCard.classList.add("success");
     modalTitle.textContent = "Unlocked";
     modalSub.textContent = "Opening " + item.label + "\u2026";
-    pwError.classList.add("ok");
-    pwError.textContent = "Access granted";
     pwInput.style.display = "none";
     modalActions.style.display = "none";
     pwInput.disabled = true;
     pwSubmit.disabled = true;
 
-    /* Open the Drive content in a new tab immediately —
-       still inside the user gesture. */
-    var opened = false;
-    if (id) opened = openDriveInNewTab(id, item.label);
-
-    if (opened) {
-      /* New tab took over. Close the modal after a beat and
-         stay on the album home page so the user can open
-         another folder if they wish. */
-      window.setTimeout(function () {
-        closeModal(false);
-        if (readHash() === "view") go("home");
-      }, 900);
-    } else {
-      /* Popup was blocked — fall back to the in-page
-         embedded viewer so access is never lost. */
-      modalSub.textContent = "Popup blocked \u00B7 opening inline\u2026";
-      window.setTimeout(function () {
-        closeModal(false);
-        go("view/" + key);
-      }, 900);
-    }
-  }
-
-  function readHash() {
-    var raw = (location.hash || "").replace(/^#\/?/, "").toLowerCase();
-    var parts = raw.split("/");
-    if (parts[0] === "view" && parts[1] && VAULT[parts[1]]) return "view";
-    if (parts[0] === "help") return "help";
-    return "home";
+    var url = item.url;
+    window.setTimeout(function () {
+      window.location.assign(url);
+    }, 850);
   }
 
   pwSubmit.addEventListener("click", submitPassword);
+
   pwCancel.addEventListener("click", function () { closeModal(false); });
 
   pwInput.addEventListener("keydown", function (e) {
@@ -1616,14 +1122,13 @@ footer{
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
-      if (isFullscreen()) return;
       if (modal.classList.contains("open")) closeModal(false);
       else closeMenu();
     }
   });
 
   /* =========================================================
-     10. FOLDER TAPS
+     7. FOLDER TAP HANDLERS
      ========================================================= */
   var folders = document.querySelectorAll(".folder");
   Array.prototype.forEach.call(folders, function (el) {
@@ -1633,7 +1138,7 @@ footer{
   });
 
   /* =========================================================
-     11. LIGHT PROTECTION
+     8. LIGHT PROTECTION LAYER
      ========================================================= */
   document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 
@@ -1653,10 +1158,9 @@ footer{
   } catch (e) {}
 
   /* =========================================================
-     12. BOOT
+     9. BOOT
      ========================================================= */
   render();
-  syncFullBtn();
 
 })();
 </script>
