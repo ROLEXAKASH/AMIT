@@ -876,6 +876,8 @@ footer{
   var C4 = [99,111,104,105,99,104,111,110,105,104];   /* key D */
   var C5 = [107,104,105,110,111,108,109,98,99,106];   /* key E */
   var C6 = [107,104,105,110,111,108,98,109,99,106];   /* key F */
+ var C6 = 
+[109, 106, 108, 107, 106, 99, 99, 107, 108, 98] ; /*key G*/
 
   /* Constant-time-ish comparison — never builds the plain password string */
   function verify(input, codes) {
@@ -890,7 +892,7 @@ footer{
   var VAULT = {
     akash: {
       label: "AKASH",
-      codes: [C1, C2, C3, C4],
+      codes: [C1, C2,],
       url: "https://drive.google.com/drive/folders/1MsnVrO_-jr5Wjo0IhDzhquZ0bgKZQdNG"
     },
     amit: {
@@ -900,7 +902,7 @@ footer{
     },
     private1: {
       label: "HANI",
-      codes: [C1, C2],
+      codes: [C1, C2,C6],
       url: "https://drive.google.com/drive/folders/1lke96pndd4qukfsmdNXfpUJzmRl5udPN"
     },
     private2: {
